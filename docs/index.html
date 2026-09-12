@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2e8b57">
+    <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="UNICO Campania" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>ABB. UNICO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Palette overrides */
+    .unico-topbar { background: #2e8b57 !important; }
+    .content.unico { background: #2e8b57 !important; }
+    .unico-banner { background: #2e8b57 !important; }
+    .unico-bottom-fill { background: #2e8b57 !important; }
+
+    .btn.secondary { background: #0a49b0 !important; }
+    .val-footer { padding-bottom: 20px !important; }
+    .val-footer .time, .val-footer .locks { color: #003366 !important; font-weight: 400 !important; }
+    .val-footer .time { font-size: 18px !important; font-weight: 400 !important; }
+    .val-footer .time span, .val-footer .locks span { font-weight: 450 !important; }
+    .val-footer .time svg { width: 23px !important; height: 23px !important; }
+    .val-footer .time svg *, .val-footer .locks svg * { stroke: #0a49b0 !important; }
+
+    /* Remove space between divider and Dettagli */
+    .unico-details { margin-top: 0 !important; }
+
+    /* Bottom button layout: icon left, label centered */
+    .unico-bottombar .btn.secondary { position: relative; }
+    .unico-bottombar .btn.secondary svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); }
+    .unico-bottombar .btn.secondary .btn-label { position: absolute; left: 50%; transform: translateX(-50%); pointer-events: none; }
+    /* Make the bottom button taller */
+    .unico-bottombar .btn.secondary { padding-top: 20px; padding-bottom: 20px; margin-bottom: 6px; }
+
+    /* Reduce gap between validation panel and triangles (second accordion body) */
+    .unico-card > details.unico-acc:nth-of-type(2) .acc-body { padding-bottom: 8px !important; }
+
+    /* Speed up triangles and position */
+    .triangles { margin-top: -1px !important; }
+    .triangles .tri-row { animation-duration: 0.7s !important; }
+
+    /* Remove bottom margin only from second accordion (Controllo e validazione) */
+    .unico-card > details.unico-acc:nth-of-type(2) { margin-bottom: 0 !important; }
+
+    /* Ticket info section styles */
+    .ticket-info-section {
+      background: #fff;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      border-bottom: 0;
+      gap: 4px;
+    }
+
+    .info-item.cost-item {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #b9b9b9;
+      padding-bottom: 8px;
+      padding-top: 17px;
+    }
+    
+    .info-label {
+      color: black;
+      font-size: 14px;
+      font-weight: 400;
+    }
+    
+    .info-value {
+      color: #1a1a1a;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .cost-value {
+      font-weight: 700;
+      font-size: 17px;
+    }
+    
+    .details-section {
+      margin-top: 0;
+      padding-top: 8px;
+    }
+
+    .details-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0 12px 0;
+    }
+    
+    .details-label {
+      color: #1a1a1a;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .details-toggle {
+      background: transparent;
+      border: 0;
+      color: #003366;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .details-toggle .chevron {
+      color: #000;
+    }
+    
+    .chevron {
+      transition: transform 0.2s ease;
+    }
+
+    .details-section.open .chevron {
+      transform: rotate(180deg);
+    }
+    
+    .company-info {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 12px;
+      text-align: center;
+    }
+    
+    .company-name {
+      font-weight: 800;
+      font-size: 14px;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+    
+    .company-address {
+      font-size: 13px;
+      color: #6b6b6b;
+      margin-bottom: 4px;
+    }
+    
+    .company-vat {
+      font-size: 13px;
+      color: #6b6b6b;
+    }
+    
+    .ticket-codes {
+      margin-top: 0;
+      padding-top: 0;
+    }
+
+    .code-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+    }
+    
+    .code-label {
+      color: #6b6b6b;
+      font-size: 14px;
+    }
+    
+    .code-value {
+      color: #6b6b6b;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    /* Mobile optimizations for iPhone 13 Pro and similar */
+    @media screen and (max-width: 428px) {
+      /* La rimozione di queste classi è gestita dal CSS generale in styles.css */
+      /* .content.unico {
+        bottom: calc(60px + var(--safe-bottom)) !important;
+      } */
+      
+      .unico-card {
+        margin: 12px;
+        padding: 12px;
+      }
+
+      .unico-card-header {
+        padding: 12px 0;
+      }
+
+      .unico-logo-img {
+        width: 50px;
+      }
+      
+      .unico-title .line1 {
+        font-size: 15px;
+        line-height: 1.3;
+      }
+      
+      .unico-title .line2 {
+        font-size: 12px;
+        line-height: 1.2;
+      }
+      
+      .qr-box {
+        width: 160px;
+        height: 160px;
+      }
+      
+      .ticket-info-section {
+        margin: 8px 0;
+        border-radius: 8px;
+      }
+      
+      .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        border-bottom: 0;
+        gap: 4px;
+      }
+
+
+      .info-label, .info-value {
+        font-size: 14px;
+      }
+      
+      .cost-value {
+        font-size: 17px;
+      }
+      
+      .company-info {
+        padding: 12px;
+        margin-top: 8px;
+      }
+      
+      .company-name {
+        font-size: 14px;
+      }
+      
+      .company-address, .company-vat {
+        font-size: 13px;
+      }
+
+      .details-section {
+        margin-top: 0;
+        padding-top: 8px;
+      }
+
+      .ticket-codes {
+        margin-top: 0;
+        padding-top: 0;
+      }
+
+      .code-label, .code-value {
+        font-size: 14px;
+      }
+
+      .code-value {
+        font-weight: 400;
+      }
+      
+      .unico-bottombar .btn.secondary {
+        width: calc(100% - 16px);
+        margin-bottom: 2px;
+        padding: 14px 16px;
+      }
+      
+      /* La rimozione di queste classi è gestita dal CSS generale in styles.css */
+      /* .unico-bottombar {
+        height: calc(60px + var(--safe-bottom)) !important;
+        padding-bottom: calc(var(--safe-bottom) + 4px) !important;
+      } */
+    }
+
+    /* Touch optimizations */
+    @media (hover: none) and (pointer: coarse) {
+      .details-toggle {
+        min-height: 44px;
+        padding: 8px;
+      }
+      
+      .icon-btn {
+        min-height: 44px;
+        min-width: 44px;
+      }
+      
+      .unico-bottombar .btn.secondary {
+        min-height: 48px;
+      }
+    }
+
+    /* Safe area adjustments for iPhone notch */
+    @supports (padding: max(0px)) {
+      .unico-topbar {
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+      }
+      
+      .unico-card {
+        margin-left: max(16px, env(safe-area-inset-left));
+        margin-right: max(16px, env(safe-area-inset-right));
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+      }
+      
+      .unico-bottombar {
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+      }
+    }
+
+    /* Font size increases for better readability */
+    .unico-title .line1 {
+      font-size: 18px !important;
+      line-height: 1.4;
+    }
+    
+    .unico-title .line2 {
+      font-size: 14px !important;
+      line-height: 1.3;
+    }
+    
+    .route {
+      font-size: 14px !important;
+    }
+
+    .valid {
+      font-size: 14px !important;
+      font-weight: 400 !important;
+    }
+
+    .unico-banner { font-weight: 400 !important; }
+    
+    .info-label {
+      font-size: 15px !important;
+    }
+    
+    .info-value {
+      font-size: 15px !important;
+    }
+    
+    .cost-value {
+      font-size: 19px !important;
+    }
+    
+    .details-label {
+      font-size: 15px !important;
+    }
+    
+    .details-toggle {
+      font-size: 15px !important;
+      color: #003366 !important;
+      font-family: 'Rubik', sans-serif !important;
+    }
+
+    .details-toggle .chevron {
+      color: #000 !important;
+    }
+    
+    .company-name {
+      font-size: 15px !important;
+    }
+    
+    .company-address, .company-vat {
+      font-size: 14px !important;
+    }
+    
+    .code-label {
+      font-size: 15px !important;
+    }
+    
+    .code-value {
+      font-size: 15px !important;
+      font-weight: 400 !important;
+    }
+    
+    .val-footer .locks {
+      font-size: 14px !important;
+    }
+
+    /* Porta la label "Costo" alla stessa dimensione del valore */
+    .info-item.cost-item .info-label { font-size: 19px !important; }
+
+    .unico-bottombar .btn.secondary .btn-label {
+      font-size: 16px !important;
+      font-weight: 600;
+    }
+
+    .clock-icon {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+
+    .lock-icon {
+      width: 15px;
+      height: 15px;
+      object-fit: contain;
+    }
+
+    /* Colora le icone con #003366 */
+    .sicon-img {
+      filter: brightness(0) saturate(100%) invert(14%) sepia(89%) saturate(1829%) hue-rotate(192deg) brightness(95%) contrast(101%);
+    }
+
+    .clock-icon {
+      filter: brightness(0) saturate(100%) invert(14%) sepia(89%) saturate(1829%) hue-rotate(192deg) brightness(95%) contrast(101%);
+    }
+
+    .lock-icon {
+      filter: brightness(0) saturate(100%) invert(14%) sepia(89%) saturate(1829%) hue-rotate(192deg) brightness(95%) contrast(101%);
+    }
+  </style>
+</head>
+<body onselectstart="return false;" ondragstart="return false;">
+  <div class="app-frame">
+    <header class="unico-topbar">
+      <button class="icon-btn back" onclick="window.location.href='tickets.html'" aria-label="Indietro">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 18L9 12L15 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="title">Ticket attivo</div>
+      <div class="spacer"></div>
+    </header>
+
+    <main class="content unico">
+      <div class="unico-card">
+        <div class="unico-card-header">
+          <img class="unico-logo-img" src="unicoC.png" alt="UNICO" />
+          <div class="unico-title">
+            <div class="line1">UNICO - AC 7 MENSILE INTEGRATO</div>
+            <div class="line2">L'abbonamento va attivato entro il giorno 15 del mese di utilizzo. Valido fino alle ore 24:00 dell'ultimo giorno del mese solare di attivazione</div>
+          </div>
+        </div>
+
+
+        <details class="unico-acc" open>
+          <summary style="color: #000; font-weight: 700;"><span class="sicon">
+            <img class="sicon-img" src="ticket.png" alt="Controllo e validazione" />
+          </span><span class="slabel">Controllo e validazione</span></summary>
+          <div class="acc-body">
+            <div class="validation-panel">
+              <div class="qr-box">
+                <img src="qr-code.png" alt="QR di validazione" />
+              </div>
+              <div class="val-footer">
+                <div class="time">
+                  <img src="clock.png" alt="Orologio" class="clock-icon" />
+                  <span id="unico-time" style="font-weight: 400;">09:53:10</span>
+                </div>
+                <div class="locks">
+                  <img src="lock.png" alt="Lucchetto" class="lock-icon" />
+                  <span style="font-weight: 400;">747</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <div class="triangles" aria-hidden="true">
+          <div class="tri-row r1"></div>
+          <div class="tri-row r2"></div>
+          <div class="tri-row r3"></div>
+        </div>
+
+        <div class="unico-banner">
+          <div class="route">Da <strong><C>CASERTA</C></strong> a <strong>FISCIANO</strong></div>
+          <div class="valid">Tempo restante: <span id="countdown"></span></div>
+          <div class="activated">Attivato il: <strong><span id="activation-date"></span> - 07:03</strong></div>
+
+        </div>
+        
+        <div class="ticket-info-section">
+          <div class="info-item">
+            <div class="info-label">Emesso il:</div>
+            <div class="info-value" id="emission-date"></div>
+          </div>
+          
+          <div class="info-item cost-item">
+            <div class="info-label">Costo</div>
+            <div class="info-value cost-value">98,00 €</div>
+          </div>
+          
+          <div class="details-section">
+            <div class="details-header">
+              <div class="details-label">Dettagli</div>
+              <button class="details-toggle" id="details-toggle" type="button">
+                Leggi tutto
+                <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M19 9l-7 7-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+
+            <div class="company-info" hidden>
+              <div class="company-details">
+                <div class="company-name">AIRCAMPANIA S.R.L.</div>
+                <div class="company-address">Via Fasano ZI loc. Pianodardine</div>
+                <div class="company-vat">P.Iva: 02977850649</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ticket-codes">
+            <div class="code-row">
+              <div class="code-label">Codice Ticket:</div>
+              <div class="code-value">8509/810701</div>
+            </div>
+            <div class="code-row">
+              <div class="code-label">PNR:</div>
+              <div class="code-value">352XWKS8CA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="unico-bottombar">
+    </div>
+
+  <script>
+    (function(){
+      function pad(n){return n<10?'0'+n:''+n}
+      function tick(){
+        var el = document.getElementById('unico-time');
+        var d = new Date();
+        el.textContent = pad(d.getHours())+":"+pad(d.getMinutes())+":"+pad(d.getSeconds());
+        el.style.fontWeight = '400';
+      }
+      tick();
+      window.unicoClock && clearInterval(window.unicoClock);
+      window.unicoClock = setInterval(tick, 1000);
+
+      // Countdown to end of month
+      function updateCountdown(){
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = now.getMonth();
+        var endOfMonth = new Date(year, month + 1, 0, 23, 59, 59, 999);
+        var diff = endOfMonth - now;
+        
+        if (diff <= 0) {
+          document.getElementById('countdown').innerHTML = '<strong>0</strong> gg <strong>0</strong> h <strong>0</strong> min';
+          return;
+        }
+        
+        var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        
+        document.getElementById('countdown').innerHTML = 
+          '<strong>' + days + ' gg ' + hours + ' h ' + minutes + ' min </strong>'  ;
+      }
+      updateCountdown();
+      window.countdownInterval && clearInterval(window.countdownInterval);
+      window.countdownInterval = setInterval(updateCountdown, 60000); // Update every minute
+
+      // Set activation date to first day of current month
+      var now = new Date();
+      var firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+      var day = pad(firstDay.getDate());
+      var month = pad(firstDay.getMonth() + 1);
+      var year = firstDay.getFullYear();
+      document.getElementById('activation-date').textContent = day + '/' + month + '/' + year;
+      document.getElementById('emission-date').textContent = day + '/' + month + '/' + year + ' - 07:02';
+
+      // Toggle 'Leggi tutto' details panel
+      var btn = document.getElementById('details-toggle');
+      if (btn) {
+        btn.addEventListener('click', function(){
+          var detailsSection = btn.closest('.details-section');
+          var companyInfo = detailsSection.querySelector('.company-info');
+          
+          detailsSection.classList.toggle('open');
+          
+          if (detailsSection.classList.contains('open')) {
+            companyInfo && companyInfo.removeAttribute('hidden');
+          } else {
+            companyInfo && companyInfo.setAttribute('hidden','');
+          }
+        });
+      }
+
+      // Prevent text selection with JavaScript
+      document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        return false;
+      });
+      
+      document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+        return false;
+      });
+      
+
+
+      // Prevent copy/paste keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && (e.keyCode === 65 || e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 88)) {
+          e.preventDefault();
+          return false;
+        }
+        if (e.metaKey && (e.keyCode === 65 || e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 88)) {
+          e.preventDefault();
+          return false;
+        }
+      });
+    })();
+
+  </script>
+
+        <script>
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(() => console.log('Service Worker registrato'))
+                    .catch((err) => console.error('SW error:', err));
+            }
+        </script>
+    </main>
+</body>
+</html>
