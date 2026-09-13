@@ -1,4 +1,4 @@
-const CACHE_NAME = 'unico-pwa-v3';
+const CACHE_NAME = 'unico-pwa-v4';
 const STATIC_ASSETS = [
   './',
   './index.html',
