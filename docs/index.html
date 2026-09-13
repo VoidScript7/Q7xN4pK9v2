@@ -421,12 +421,33 @@
     .lock-icon {
       filter: brightness(0) saturate(100%) invert(14%) sepia(89%) saturate(1829%) hue-rotate(192deg) brightness(95%) contrast(101%);
     }
+
+    /* Ensure full scrolling so all data can be pulled comfortably above the white bottom bar */
+    .content.unico {
+      bottom: calc(40px + var(--safe-bottom)) !important;
+      padding-bottom: 24px !important;
+      -webkit-overflow-scrolling: touch !important;
+      overflow-y: auto !important;
+    }
+
+    /* Striscetta bianca fissa in basso ripristinata e visibile */
+    .unico-bottombar {
+      display: block !important;
+      position: fixed !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      height: calc(40px + var(--safe-bottom)) !important;
+      background: #ffffff !important;
+      box-shadow: 0 -1px 0 rgba(0,0,0,0.12) !important;
+      z-index: 12 !important;
+    }
   </style>
 </head>
 <body onselectstart="return false;" ondragstart="return false;">
   <div class="app-frame">
     <header class="unico-topbar">
-      <button class="icon-btn back" onclick="window.location.href='tickets.html'" aria-label="Indietro">
+      <button class="icon-btn back" onpointerdown="var m=document.querySelector('meta[name=\'theme-color\']');if(m)m.setAttribute('content','#ffffff');var ma=document.querySelector('meta[name=\'apple-mobile-web-app-status-bar-style\']');if(ma)ma.setAttribute('content','default');" onclick="window.location.href='tickets.html'" aria-label="Indietro">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 18L9 12L15 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="title">Ticket attivo</div>

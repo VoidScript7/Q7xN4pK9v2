@@ -454,6 +454,17 @@
       if (validEl) {
         validEl.textContent = pad(endOfMonth.getDate()) + '/' + pad(endOfMonth.getMonth() + 1) + '/' + endOfMonth.getFullYear();
       }
+
+      // Cambio istantaneo colore status bar al tocco del biglietto
+      var ticketLink = document.querySelector('.ticket-list-card');
+      if (ticketLink) {
+        ticketLink.addEventListener('pointerdown', function() {
+          var metaTheme = document.querySelector('meta[name="theme-color"]');
+          if (metaTheme) metaTheme.setAttribute('content', '#2e8b57');
+          var metaApple = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+          if (metaApple) metaApple.setAttribute('content', 'black-translucent');
+        });
+      }
     })();
 
     // Prevent copy/paste keyboard shortcuts
