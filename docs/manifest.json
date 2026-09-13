@@ -1,10 +1,10 @@
 {
   "name": "Unico Campania",
   "short_name": "Unico",
-  "start_url": "./index.html",
+  "start_url": "./tickets.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#2e8b57",
+  "theme_color": "#ffffff",
   "icons": [
     {
       "src": "img/icon-192.png",

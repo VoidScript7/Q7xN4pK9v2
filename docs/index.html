@@ -474,7 +474,7 @@
         </div>
 
         <div class="unico-banner">
-          <div class="route">Da <strong><C>CASERTA</C></strong> a <strong>FISCIANO</strong></div>
+          <div class="route">Da <strong>CASERTA</strong> a <strong>FISCIANO</strong></div>
           <div class="valid">Tempo restante: <span id="countdown"></span></div>
           <div class="activated">Attivato il: <strong><span id="activation-date"></span> - 07:03</strong></div>
 
@@ -523,11 +523,11 @@
           </div>
         </div>
       </div>
+    </main>
 
-    <div class="unico-bottombar">
-    </div>
+    <div class="unico-bottombar"></div>
 
-  <script>
+    <script>
     (function(){
       function pad(n){return n<10?'0'+n:''+n}
       function tick(){
@@ -600,8 +600,6 @@
         e.preventDefault();
         return false;
       });
-      
-
 
       // Prevent copy/paste keyboard shortcuts
       document.addEventListener('keydown', function(e) {
@@ -615,16 +613,15 @@
         }
       });
     })();
+    </script>
 
-  </script>
-
-        <script>
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(() => console.log('Service Worker registrato'))
-                    .catch((err) => console.error('SW error:', err));
-            }
-        </script>
-    </main>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+          .then(() => console.log('Service Worker registrato'))
+          .catch((err) => console.error('SW error:', err));
+      }
+    </script>
+  </div>
 </body>
 </html>
